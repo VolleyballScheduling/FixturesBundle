@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\FixturesBundle\DataFixtures\ORM;
+namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -14,7 +14,7 @@ class LoadCarouselData extends DataFixture
         
         $splash->setName('splash');
         for ($i = 1; $i <= 3; $i++) {
-            $this->addItem($this->>getReference('Volleyball.Carousel.Item-'.$i))
+            $this->addItem($this->getReference('Volleyball.Carousel.Item-'.$i));
         }
         
         

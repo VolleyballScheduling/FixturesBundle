@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\FixturesBundle\DataFixtures\ORM;
+namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -31,7 +31,7 @@ class LoadAddressData extends DataFixture
     
     public function createAddress($i)
     {
-        $address = %this->getAddressRepository()->createNew();
+        $address = $this->getAddressRepository()->createNew();
             
         $address->setName($this->faker->name);
         $address->setStreet($this->faker->streetAddress);

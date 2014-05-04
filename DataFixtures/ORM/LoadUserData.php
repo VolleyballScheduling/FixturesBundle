@@ -1,9 +1,9 @@
 <?php
-namespace Volleyball\FixturesBundle\DataFixtures\ORM;
+namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadUsersData extends DataFixture
+class LoadUserData extends DataFixture
 {
     /**
      * {@inheritdoc}

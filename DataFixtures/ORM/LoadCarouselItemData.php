@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\FixturesBundle\DataFixtures\ORM;
+namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -33,12 +33,12 @@ class LoadCarouselItemData extends DataFixture
     {
         $item = $this->getCarouselItemRepository()->createNew();
         
-        $item->setName('item "%s"', $this->faker->word));
+        $item->setName('item "%s"', $this->faker->word);
         $item->setDescription($this->faker->paragraph);
         $item->setCaption($this->faker->sentence);
-        $item->setImage($this->>faker->image);
+        $item->setImage($this->faker->image);
         
-        $this->>setReference('Volleyball.Carousel.Item-'.$i, $item);
+        $this->setReference('Volleyball.Carousel.Item-'.$i, $item);
         
         return $item;
     }

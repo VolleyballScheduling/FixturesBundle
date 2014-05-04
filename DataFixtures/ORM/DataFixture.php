@@ -1,5 +1,5 @@
 <?php
-namespace Volleyball\FixturesBundle\DataFixtures\ORM;
+namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
