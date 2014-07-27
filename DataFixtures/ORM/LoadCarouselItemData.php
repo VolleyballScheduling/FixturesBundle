@@ -31,12 +31,11 @@ class LoadCarouselItemData extends DataFixture
     
     public function createItem($i)
     {
-        $item = $this->getCarouselItemRepository()->createNew();
+        $item = new \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem();
         
         $item->setName('item "%s"', $this->faker->word);
-        $item->setDescription($this->faker->paragraph);
         $item->setCaption($this->faker->sentence);
-        $item->setImage($this->faker->image);
+        $item->setImage($this->faker->image('/tmp', 640, 480));
         
         $this->setReference('Volleyball.Carousel.Item-'.$i, $item);
         

@@ -10,13 +10,14 @@ class LoadCarouselData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $splash = $this->getCarouselRepository()->createNew();
+        $this->setRepository('Volleyball\Bundle\UtilityBundle\Repository\CarouselRepository');
+        $splash = new \Volleyball\Bundle\UtilityBundle\Entity\Carousel();
         
         $splash->setName('splash');
         for ($i = 1; $i <= 3; $i++) {
-            $this->addItem($this->getReference('Volleyball.Carousel.Item-'.$i));
+            $splash->addItem($this->getReference('Volleyball.Carousel.Item-'.$i));
         }
-        
+        $manager->persist($splash);
         
         $manager->flush();
     }

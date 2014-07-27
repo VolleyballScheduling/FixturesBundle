@@ -10,8 +10,8 @@ class LoadAddressData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 1; $i <= 10; $i++) {
-            $this->createAddress($i);
+        for ($i = 1; $i <= $this->getFixtureMax('address'); $i++) {
+            $manager->persist($this->createAddress($i));
             
             if (0 == $i % 5) {
                 $manager->flush();
@@ -31,7 +31,7 @@ class LoadAddressData extends DataFixture
     
     public function createAddress($i)
     {
-        $address = $this->getAddressRepository()->createNew();
+        $address = new \Volleyball\Bundle\UtilityBundle\Entity\Address();
             
         $address->setName($this->faker->name);
         $address->setStreet($this->faker->streetAddress);
@@ -39,7 +39,9 @@ class LoadAddressData extends DataFixture
         $address->setCity($this->faker->city);
         $address->setZone($this->faker->state);
         $address->setCountry($this->faker->country);
-        $address->setPostalCode($this->faker->postalcode);
+        $address->setPostalCode($this->faker->postcode);
+        $address->setLatitude($this->faker->latitude);
+        $address->setLongitude($this->faker->longitude);
         
         $this->setReference('Volleyball.Address-'.$i, $address);
         
