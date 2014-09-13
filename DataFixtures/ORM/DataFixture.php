@@ -1,11 +1,15 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Faker\Factory as FakerFactory;
+use \Faker\Factory as FakerFactory;
+use \Symfony\Component\Config\FileLocator;
+use \Symfony\Component\Yaml\Yaml;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\Common\DataFixtures\AbstractFixture;
+use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+
+/** @TODO add FileLocator and i/o */
 
 abstract class DataFixture extends AbstractFixture implements ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -22,6 +26,22 @@ abstract class DataFixture extends AbstractFixture implements ContainerAwareInte
      * @var Generator
      */
     protected $faker;
+    
+    protected $repository;
+    
+    protected $entity;
+    
+    /**
+     * configuration settings
+     * @var ArrayCollection
+     */
+    private $configs;
+
+    /**
+     * config file locator
+     * @var FileLocater
+     */
+    private $locator;
 
     /**
      * Constructor
@@ -29,25 +49,33 @@ abstract class DataFixture extends AbstractFixture implements ContainerAwareInte
     public function __construct()
     {
         $this->faker = FakerFactory::create();
+        $path = __DIR__ .DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
+                DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+                'app' . DIRECTORY_SEPARATOR;
+        $configDirectories = array(
+            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Resources' . DIRECTORY_SEPARATOR . 'config',
+            $path . 'config'
+        );
+        $this->locator = new FileLocator($configDirectories);
     }
 
     /**
      * @{inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
-    public function __call($method, $arguments)
-    {
-        $matches = array();
-        if (preg_match('/^get(.*)Repository$/', $method, $matches)) {
-            return $this->get('volleyball.repository.'.$matches[1]);
-        }
-
-        return call_user_func_array(array($this, $method), $arguments);
-    }
+//    public function __call($method, $arguments)
+//    {
+//        $matches = array();
+//        if (preg_match('/^get(.*)Repository$/', $method, $matches)) {
+//            return $this->get('volleyball.repository.'.$matches[1]);
+//        }
+//
+//        return call_user_func_array(array($this, $method), $arguments);
+//    }
 
     /**
      * Get service by id.
@@ -59,5 +87,56 @@ abstract class DataFixture extends AbstractFixture implements ContainerAwareInte
     protected function get($id)
     {
         return $this->container->get($id);
+    }
+    
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
+    }
+    
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+    
+    public function setEntity($entity)
+    {
+        $this->entity = $entity;
+    }
+    
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+    
+    /**
+     * Get configuration file parameter
+     * @param string $parameter
+     * @return type
+     */
+    public function getFixtureMax($parameter)
+    {
+        if (!$this->configs instanceof ArrayCollection) {
+            $this->generateConfigs('parameters.yml', null, false);
+        }
+
+        if ($this->configs->contains('volleyball.fixtures.'.$parameter.'.total')) {
+            return $this->configs->contains('volleyball.fixtures.'.$parameter.'.total');
+        } else {
+            return $this->configs->contains('volleyball.fixtures.'.$parameter);
+        }
+    }
+
+    /**
+     * Generate configuration array
+     * @param string $file
+     * @param string $path
+     * @param bool $retFile
+     */
+    private function generateConfigs($file, $path = null, $retFile = false)
+    {
+        $configs = Yaml::parse($this->locator->locate($file, $path, $retFile)[0]);
+
+        $this->configs = new ArrayCollection($configs['parameters']);
     }
 }

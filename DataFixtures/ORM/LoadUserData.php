@@ -1,7 +1,7 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use \Doctrine\Common\Persistence\ObjectManager;
 
 class LoadUserData extends DataFixture
 {
@@ -10,35 +10,44 @@ class LoadUserData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $user = $this->getUserRepository()->createNew();
+        $user = new \Volleyball\Bundle\UserBundle\Entity\User();
 
-        $user->setFirstname($this->faker->firstName);
-        $user->setLastname($this->faker->lastName);
+        $user->setUsername('admin');
+        $user->setFirstName($this->faker->firstName);
+        $user->setLastName($this->faker->lastName);
         $user->setEmail('volleyball@daviddurost.net');
-        $user->setPlainPassword('v0l1ey8a1l');
+        $user->setPassword('v0l1ey8a1l');
         $user->setEnabled(true);
         $user->setRoles(array('ROLE_ADMIN'));
+        $user->setGender('male');
+        $user->setBirthdate($this->faker->datetime());
 
         $manager->persist($user);
         $manager->flush();
 
         $this->setReference('User-Administrator', $user);
 
-        for ($i = 1; $i <= 5; $i++) {
-            $user = $this->getUserRepository()->createNew();
-
-            $username = $this->faker->username;
-
-            $user->setFirstname($this->faker->firstName);
-            $user->setLastname($this->faker->lastName);
-            $user->setEmail($username.'@example.com');
-            $user->setPlainPassword($username);
-            $user->setEnabled($this->faker->boolean());
-
-            $manager->persist($user);
-
-            $this->setReference('Volleyball.User-'.$i, $user);
-        }
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity('\Volleyball\Bundle\UserBundle\Entity\User', 5);
+        $populator->execute();
+//        for ($i = 1; $i <= 5; $i++) {
+//            $user = new \Volleyball\Bundle\UserBundle\Entity\User();
+//
+//            $username = $this->faker->username;
+//
+//            $user->setUsername($username);
+//            $user->setFirstName($this->faker->firstName);
+//            $user->setLastName($this->faker->lastName);
+//            $user->setEmail($username.'@example.com');-
+//            $user->setPassword($username);
+//            $user->setEnabled($this->faker->boolean);
+//            $user->setGender((0 == $i % 2) ? 'male' : 'female');
+//            $user->setBirthdate($this->faker->datetime());
+//
+//            $manager->persist($user);
+//
+//            $this->setReference('Volleyball.User-'.$i, $user);
+//        }
 
         $manager->flush();
     }
