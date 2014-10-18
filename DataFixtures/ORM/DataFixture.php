@@ -117,13 +117,13 @@ abstract class DataFixture extends AbstractFixture implements ContainerAwareInte
     public function getFixtureMax($parameter)
     {
         if (!$this->configs instanceof ArrayCollection) {
-            $this->generateConfigs('parameters.yml', null, false);
+            $this->generateConfigs('parameters.yml', '../../Resources/config');
         }
-
+        
         if ($this->configs->contains('volleyball.fixtures.'.$parameter.'.total')) {
-            return $this->configs->contains('volleyball.fixtures.'.$parameter.'.total');
+            return $this->configs->get('volleyball.fixtures.'.$parameter.'.total');
         } else {
-            return $this->configs->contains('volleyball.fixtures.'.$parameter);
+            return $this->configs->get('volleyball.fixtures.'.$parameter);
         }
     }
 

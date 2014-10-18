@@ -10,26 +10,13 @@ class LoadFacilityData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        for ($i = 1, $c = 1; $i <= $this->getFixtureMax('facility'); $i++) {
-            $facility = new \Volleyball\Bundle\FacilityBundle\Entity\Facility();
-            
-            $facility->setName($this->faker->name);
-            $facility->setAddress($this->getReference('Volleyball.Address-'.$i));
-            $facility->setOrganization($this->getReference('Volleyball.Organization-'.(0 == $i % 4 ? 2 : 1)));
-            $facility->setCouncil($this->getReference('Volleyball.Council-'.$c));
-            $facility->setRegion($this->getReference('Volleyball.Region-'.$i));
-            
-            $c = (0 == $i % 2 ? ++$c : $c);
-
-            $this->setReference('Volleyball.Facility-'.$i, $facility);
-            
-            $manager->persist($facility);
-            
-            // flush every 5 itterations
-            if (0 == $i % 5) {
-                $manager->flush();
-            }
-        }
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity(
+            '\Volleyball\Bundle\FacilityBundle\Entity\Facility',
+            $this->getFixtureMax('facility')
+        );
+        
+        $populator->execute();
         
         $manager->flush();
     }

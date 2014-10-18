@@ -19,6 +19,8 @@ class LoadCarouselData extends DataFixture
         }
         $manager->persist($splash);
         
+        $this->setReference('Volleyball.Carousel-1', $splash);
+        
         $manager->flush();
     }
     

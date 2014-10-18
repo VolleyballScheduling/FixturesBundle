@@ -1,7 +1,7 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use \Doctrine\Common\Persistence\ObjectManager;
 
 class LoadReportData extends DataFixture
 {
@@ -18,6 +18,6 @@ class LoadReportData extends DataFixture
      */
     public function getOrder()
     {
-        return 16;
+        return 30;
     }
 }

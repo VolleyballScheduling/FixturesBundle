@@ -1,7 +1,7 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use \Doctrine\Common\Persistence\ObjectManager;
 
 class LoadLevelData extends DataFixture
 {
@@ -10,23 +10,13 @@ class LoadLevelData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->setRepository('Volleyball\Bundle\PasselBundle\Repository\LevelRepository');
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity(
+            '\Volleyball\Bundle\PasselBundle\Entity\Level',
+            $this->getFixtureMax('attendee_level')
+        );
         
-        for ($i = 1; $i <= $this->getFixtureMax('level'); $i++) {
-            $level = $this->getRepository()->createNew();
-            
-            $level->setName($this->faker->name);
-            $level->setDescription($this->faker->text);
-            $level->setOrganization($this->getReference('Volleyball.Organization-'.(0 == $i % 2 ? 2 : 1)));
-                       
-            if (1 == $i) {
-                $level->isSpecial(true);
-            }
-           
-            $this->setReference('Volleyball.Level-'.$i, $level);
-            
-            $manager->persist($level);
-        }
+        $populator->execute();
         
         $manager->flush();
     }
@@ -36,6 +26,6 @@ class LoadLevelData extends DataFixture
      */
     public function getOrder()
     {
-        return 21;
+        return 18;
     }
 }

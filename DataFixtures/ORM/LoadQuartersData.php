@@ -10,30 +10,17 @@ class LoadQuartersData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->setRepository('Volleyball\Bundle\FacilityBundle\Repository\QuartersRepository');
-
-        for ($i = 1, $f = 1, $type = true; $i <= 160; $i++) {
-            $quarters = new \Volleyball\Bundle\FacilityBundle\Entity\Quarters();
-            
-            $quarters->setName($this->faker->name);
-            $quarters->setFacility($this->getReference('Volleyball.Facility-'.$f));
-            $quarters->setCapacity(10);
-            
-            $type ^= true;
-            $quarters->setType(($type ? 'passel' : 'faculty' ));
-            
-            // 4 quarters per facility (2 passel, 2 faculty)
-            $f = (0 == $i % 4) ? ++$f : $f;
-
-            $this->setReference('Volleyball.Quarters-'.$i, $quarters);
-            
-            $manager->persist($quarters);
-            
-            // flush every 5 itterations
-            if (0 == $i % 5) {
-                $manager->flush();
-            }
-        }
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity(
+            '\Volleyball\Bundle\FacilityBundle\Entity\Quarters',
+            $this->getFixtureMax('quarters'),
+            array(
+                'capacity' => 10,
+                'type' => $this->faker->boolean ? 'passel' : 'faculty'
+            )
+        );
+        
+        $populator->execute();
         
         $manager->flush();
     }

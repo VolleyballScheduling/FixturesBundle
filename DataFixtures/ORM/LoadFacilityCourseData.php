@@ -1,35 +1,22 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use \Doctrine\Common\Persistence\ObjectManager;
 
-class LoadFacilityCourseData extends DataFixture
+class LoadCourseCourseData extends DataFixture
 {
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $this->setRepository('Volleyball\Bundle\EnrollmentBundle\Repository\FacilityCourseRepository');
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity(
+            '\Volleyball\Bundle\EnrollmentBundle\Entity\FacilityCourse',
+            $this->getFixtureMax('facility_course')
+        );
         
-        for ($i = 1, $f = 1, $c = 1, $s = 1; $i <= $this->getFixtureMax('facility_course'); $i++) {
-            $facility_course = $this->getRepository()->createNew();
-            
-            $facility_course->setCourse($this->getReference('Volleyball.Course-'.$c));
-            $facility_course->setFacility($this->getReference('Volleyball.Facility-'.$f));
-            $facility_course->setSeason($this->getReference('Volleyball.Season-'.$s));
-            
-            $this->setReference('Volleyball.FacilityCourse-'.$i, $facility_course);
-            
-            // flush every 5 itterations
-            if (0 == $i % 5) {
-                $manager->flush();
-            }
-
-            $s = (0 == $i % 2) ? ++$s : $s;
-            $f = (0 == $i % 4) ? ++$f : $f;
-            $c = (0 == $i % 4) ? ++$c : $c;
-        }
+        $populator->execute();
         
         $manager->flush();
     }

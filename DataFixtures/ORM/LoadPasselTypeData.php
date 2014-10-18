@@ -1,7 +1,7 @@
 <?php
 namespace Volleyball\Bundle\FixturesBundle\DataFixtures\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use \Doctrine\Common\Persistence\ObjectManager;
 
 class LoadPasselTypeData extends DataFixture
 {
@@ -10,28 +10,10 @@ class LoadPasselTypeData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->setRepository('Volleyball\Bundle\PasselBundle\Repository\TypeRepository');
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity('\Volleyball\Bundle\PasselBundle\Entity\Type', $this->getFixtureMax('passel_type'));
         
-        for ($i = 1, $o = 1; $i <= $this->getFixtureMax('passel_type'); $i++) {
-            $type = $this->getRepository()->createNew();
-            
-            $type->setName($this->faker->name);
-            $type->setDescription($this->faker->text);
-            $type->setOrganization($this->getReference('Volleyball.Organization-'.$o));
-            
-            $this->setReference('Volleyball.PasselType-'.$i, $type);
-            
-            // flush every 5 itterations
-            if (0 == $i % 5) {
-                $manager->flush();
-            }
-            
-            if (0 == $i % 1) { // 2 types
-                $o++;
-            } elseif ($o === $this->getFixtureMax('organization')) { // wrap loading
-                $o = 1;
-            }
-        }
+        $populator->execute();
         
         $manager->flush();
     }
@@ -41,6 +23,6 @@ class LoadPasselTypeData extends DataFixture
      */
     public function getOrder()
     {
-        return 17;
+        return 13;
     }
 }

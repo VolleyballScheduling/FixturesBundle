@@ -10,29 +10,16 @@ class LoadClassData extends DataFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->setRepository('Volleyball\Bundle\CourseBundle\Repository\VbClassRepository');
+        $populator = new \Faker\ORM\Doctrine\Populator($this->faker, $manager);
+        $populator->addEntity(
+            '\Volleyball\Bundle\CourseBundle\Entity\VbClass',
+            $this->getFixtureMax('class'),
+            array(
+                'capacity' => 10
+            )
+        );
         
-        for ($i = 1, $d = 1, $c = 1, $f = 1; $i <= $this->getFixtureMax('class'); $i++) {
-            $class = $this->getRepository()->createNew();
-            
-            $class->setName($this->faker->name);
-            $class->setDepartment($this->getReference('Volleyball.Department-'.$d));
-            $class->setFacilityCourse($this->getReference('Volleyball.FacilityCourse-'.$c));
-            $class->setFaculty($this->getReference('Volleyball.Faculty-'.$f));
-            $class->setCapacity(10);
-            $class->isEnabled((0 == $i % 2));
-            
-            $this->setReference('Volleyball.Class-'.$i, $class);
-            
-            // flush every 5 itterations
-            if (0 == $i % 5) {
-                $manager->flush();
-            }
-            
-            $c += 2;
-            $d += 2;
-            $f++;
-        }
+        $populator->execute();
         
         $manager->flush();
     }
