@@ -7,3 +7,11 @@
         admin: true
         birthdate: <date()>
         gender: male
+    user (template):
+        firstName: <firstName()>
+        lastName (unique): <lastName()>
+        email: $firstName.$lastName@volleyball.net
+        birthdate: <date()>
+        gender: 50%? male : female
+        username: <username()>
+        
