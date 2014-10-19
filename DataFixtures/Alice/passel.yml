@@ -1,0 +1,33 @@
+import:
+    - attendee.yml
+
+\Volleyball\Bundle\PasselBundle\Entity\Type:
+    # Passel Type - 1 per organization [2]
+    passelType{1..2}:
+        name: passel type <current()>
+        description: <paragraph()>
+        organizations: [ @organization<current()> ]
+
+\Volleyball\Bundle\PasselBundle\Entity\Passel:
+    # Passel - 2 per organization [4]
+    passel{1..4}:
+        name: <word()>
+        type: `50%? @passelType<(current() / 2)> : @passelType<current()>
+        organization: $type->organizations[0]
+        council: $organization->councils[<( 50%? 0 : 1 )>]
+        region: $council->regions[0]
+
+\Volleyball\Bundle\PasselBundle\Entity\Leader:
+    # Leader - 2 per passel [8]
+    leader{1..8} (extends User):
+        passel: @passel<( 50%? current() / 2 : current() )>
+        admin: 50%? true
+        primary: $admin
+        
+\Volleyball\Bundle\PasselBundle\Entity\Faction:
+    # Faction - 2 per passel [8]
+    faction{1..8}:
+        name: <word()>
+        description: <paragraph()>
+        passel: @passel<( 50%? current() / 2 : current() )>
+        avatar: <imageUrl()>

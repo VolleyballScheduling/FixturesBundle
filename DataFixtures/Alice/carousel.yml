@@ -1,0 +1,12 @@
+\Volleyball\Bundle\UtilityBundle\Entity\Carousel:
+    # Carousel - Homepage Splash
+    splash:
+        name: splash
+\Volleyball\Bundle\UtilityBundle\Entity\CarouselItem:
+    # Carousel Items - 3 for $splash
+    item{1..3}:
+        name: item <current()>
+        description: <paragraph()>
+        caption: <sentence()>
+        image: <image()>
+        carousel: @splash

@@ -1,0 +1,30 @@
+\Volleyball\Bundle\CourseBundle\Entity\Requirement:
+    # Requirement - 4 per course, 2 parents | 2 children [16]
+    requirement{1..16}:
+        name: requirement <current()>
+        description: <paragraph()>
+        parent: 50%? @requirement<( current() - 1 )>
+        optional: $parent
+\Volleyball\Bundle\CourseBundle\Entity\Course:
+    # Coruse - 2 per organization [4]
+    course{1..4}:
+        name: course <current()>
+        description: <paragraph()>
+        organizations: [ @organization<( 50%? 2 : 1 )> ]
+        requirements: 4x @requirement*
+\Volleyball\Bundle\EnrollmentBundle\Entity\FacilityCourse:
+    # Facility Course - [16]
+    facilityCourse{1..16}:
+        course: @course<( 50%? 50%? current() /4 : current() / 2 : current() )>
+        season: @season<current()>
+        facility: $season->facility
+\Volleyball\Bundle\CourseBundle\Entity\VbClass:
+    # Class - 2 classes per facility course [32]
+    vbClass{1..32}:
+        facilityCourse: @facilityCourse<( 50%? current() /2 : current() )>
+        department: $facilityCourse->facility->departments->first
+        faculty: 1x @faculty*
+        course: $facilityCourse->course
+        capacity: numberBetween(5, 15)
+        enabled: 50%? true
+        

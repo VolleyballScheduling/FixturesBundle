@@ -1,0 +1,17 @@
+\Volleyball\Bundle\OrganizationBundle\Entity\Region:
+    # Region - 2 per council [8]
+    region{1..8}:
+        name: region<current()>
+        description: <paragraph()>
+\Volleyball\Bundle\OrganizationBundle\Entity\Council:
+    # Council - 2 per organization [4]
+    council{1..4}:
+        name: council<current()>
+        description: <paragraph()>
+        regions: 2x @region*
+\Volleyball\Bundle\OrganizationBundle\Entity\Organization:
+    # Organization [2]
+    organization{1..2}:
+        name: organization <current()>
+        description: <paragraph()>
+        councils: 2x @council*

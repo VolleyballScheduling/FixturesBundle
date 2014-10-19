@@ -1,0 +1,12 @@
+import
+    - 'carousel.yml'
+    - 'address.yml'
+    - 'user.yml'
+    - 'organization.yml'
+    - 'passel.yml'
+    - 'facility.yml'
+    - 'season.yml'
+    - 'couse.yml'
+    - 'passel_enrollment.yml'
+    - 'attendee_enrollment.yml'
+    - 'report.yml'

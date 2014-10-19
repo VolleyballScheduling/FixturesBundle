@@ -1,0 +1,10 @@
+\Volleyball\Bundle\UtilityBundle\Entity\Address:
+    # Address - 1 per user/ facility
+    address{1..50}:
+        name: address <current()>
+        street: <street()>
+        suburb: <secondaryAddress()>
+        city: <city()>
+        zone: <state()>
+        country: <country()>
+        postalCode: <postalcode()>

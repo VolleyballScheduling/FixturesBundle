@@ -1,32 +1,33 @@
 {
-    name: "volleyball/fixtures-bundle",
-    type: "symfony-bundle",
-    description: Volleyball fixtures bundle. It contains the fixtures for the volleyball system",
-    keywords: [
+    "name": "volleyball/fixtures-bundle",
+    "type": "symfony-bundle",
+    "description": "Volleyball fixtures bundle. It contains the fixtures for the volleyball system",
+    "keywords": [
         "scheduling",
         "summercamp"
     ],
-    homepage: "http://daviddurost.net/projects/volleyball",
-    license: "MIT",
-    authors: [
+    "homepage": "http://daviddurost.net/projects/volleyball",
+    "license": "MIT",
+    "authors": [
         {
-        name: "David Durost",
-        homepage: "http://daviddurost.net"
+        "name": "David Durost",
+        "homepage": "http://daviddurost.net"
         }
     ],
-    require: {
-        php: ">=5.5"
+    "require": {
+        "php": ">=5.5"
     },
-    require-dev: {
-        fzaninotto/faker: "1.2.*",
-        doctrine/doctrine-fixtures-bundle: "2.2.*"
+    "require-dev": {
+        "fzaninotto/faker": "1.2.*",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*",
+        "h4cc/alice-fixtures-bundle": "dev-master"
     },
-    config: {
-        bin-dir: "bin"
+    "config": {
+        "bin-dir": "bin"
     },
-    autoload: {
-        psr-4: {
-            Volleyball\FixturesBundle\: ""
+    "autoload": {
+        "psr-4": {
+            "\\Volleyball\\Bundle\\FixturesBundle\\": ""
         }
     }
 }

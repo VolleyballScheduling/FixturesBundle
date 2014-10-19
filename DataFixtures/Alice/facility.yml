@@ -1,0 +1,31 @@
+\Volleyball\Bundle\FacilityBundle\Entity\Department:
+    # Department - 2 per facility [8]
+    department{1..8}:
+        name: department <current()>
+        description: <paragraph()>
+\Volleyball\Bundle\FacilityBundle\Entity\Quarters:
+    # Quarters - 4 per facility, 2 faculty | 2 passel
+    quarters{1..16}:
+        name: quarters <current()>
+        capacity: 50%? numberBetween(20, 30) : numberBetween(4, 6)
+        type: 50%? faculty : passel
+\Volleyball\Bundle\FacilityBundle\Entity\Position:
+    # Faculty position - 2 per facility [16]
+    fposition{1..16}:
+        name: faculty position <current()>
+        description: <paragraph()>
+\Volleyball\Bundle\FacilityBundle\Entity\Faculty:
+    # Faculty - 2 per facility [8]
+    faculty{1..8} (extends User):
+        facility: @facility<( 50%? current() / 2 ; current() )>
+        position: @fposition<numberBetween(1, 4)>
+        quarters: @facility->quarters('faculty')->first
+        admin: 50%? true
+\Volleyball\Bundle\FacilityBundle\Entity\Facility:
+    facility{1..4}:
+        name: facility <current()>
+        address: @address<current()>
+        council: @council<current()>
+        positions: 2x @fposition*
+        departments: 2x @department*
+        quarters: 4x @quarters*

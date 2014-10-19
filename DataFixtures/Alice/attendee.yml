@@ -1,0 +1,19 @@
+\Volleyball\Bundle\PasselBundle\Entity\Position:
+    # Attendee Position - 2 per organization [4]
+    attendeePosition{1..4}:
+        name (unique): attendee position <current()>
+        description: <paragraph()>
+        organization: @organization<( 50%? 2 : 1 )>
+\Volleyball\Bundle\PasselBundle\Entity\Level:
+    # Attendee Level - 2 per organization [4]
+    attendeeLevel{1..4}:
+        name (unique): attendee level <current()>
+        description: <paragraph()>
+        organizations: [ @organization<( 50%? 2 : 1 )> ]
+        special: 50%? true
+\Volleyball\Bundle\PasselBundle\Entity\Faction:
+    # Attendee - 2 per faction [16]
+    attendee{1..16}(extends User):
+        position: @attendeePassel<numberBetween(1, 4)>
+        level: @attendeeLevel<numberBetween(1, 4)>
+        faction: @faction<( 50%? current() / 2 : current() )>

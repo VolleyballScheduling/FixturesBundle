@@ -1,0 +1,23 @@
+\Volleyball\Bundle\EnrollmentBundle\Entity\Period:
+    # Period - 2 per week [64]
+    period{1..64}:
+        name: period <current()>
+        start: <time()>
+        end: <( strtotime('+ 45 minutes', $start) )>
+        special: 50%? true
+\Volleyball\Bundle\EnrollmentBundle\Entity\Week:
+    # Week - 2 per season [32]
+    week{1..32}:
+        name: week <current()>
+        facility: $season->facility
+        start: <date('y-m-d', $season->year)>
+        end: <( strtotime('+ 1 week', $start) )>
+        speacial: 50%? true
+        periods: 2x @period*
+\Volleyball\Bundle\EnrollmentBundle\Entity\Season:
+    # Season - 2 per facility [16]
+    season{1..16}:
+        name: season <current()>
+        year: 50%? <date('Y')> : <(date('Y') - 1)>
+        facility: 50%? @facililty<(current() / 2)> : @facility<current()>
+        weeks: 2x @week*

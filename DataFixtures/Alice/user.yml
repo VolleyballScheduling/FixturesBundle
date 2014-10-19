@@ -1,0 +1,9 @@
+\Volleyball\Bundle\UserBundle\Entity\Admin:
+    admin:
+        firstName: admin
+        lastName: admin
+        email: admin@volleyball.net
+        username: admin
+        admin: true
+        birthdate: <date()>
+        gender: male
