@@ -11,7 +11,7 @@ class LoadCarouselItemData extends DataFixture
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 3; $i++) {
-            $manager->persist($this->createItem());
+            $manager->persist($this->createItem($i));
         }
         
         $manager->flush();
@@ -29,7 +29,7 @@ class LoadCarouselItemData extends DataFixture
     {
         $item = new \Volleyball\Bundle\UtilityBundle\Entity\CarouselItem();
         
-        $item->setName('item "%s"', $this->faker->word);
+        $item->setName(sprintf("item %s", $this->faker->word));
         $item->setCaption($this->faker->sentence);
         $item->setImage($this->faker->image('/tmp', 640, 480));
         

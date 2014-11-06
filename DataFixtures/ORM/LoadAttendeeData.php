@@ -15,7 +15,7 @@ class LoadAttendeeData extends DataFixture
             '\Volleyball\Bundle\PasselBundle\Entity\Attendee',
             $this->getFixtureMax('attendee'),
             array(
-                'roles' => 'ROLE_PASS_ATTENDEE'
+                'roles' => 'ROLE_PASSEL_ATTENDEE'
             )
         );
         
